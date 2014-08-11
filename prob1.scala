@@ -1,0 +1,1 @@
+println( (1 to 999).filter( (i:Int) => (i % 3 == 0) || (i % 5 == 0)).reduce(_+_) );
