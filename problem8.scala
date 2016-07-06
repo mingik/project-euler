@@ -50,12 +50,8 @@ val str = """
 71636269561882670428252483600823257530420752963450
 """
 
-val listOfStrings =  str.trim.split("\n").toList
+val listOfNums = str.trim.toList.filter(_ != '\n').map(str => BigInt(str.toString))
 
-val listOfNumbers = listOfStrings.map( li => li.map(ch => Integer.parseInt(ch.toString)))
+listOfNums.sliding(13).toList.map(ll => ll.reduce(_*_)).max
 
-list.sliding(13).toList.map(li => li.reduce(_*_)).max
-
-listOfNumbers.map( li => li.sliding(13).toList.map(ll => ll.reduce(_*_)).max).max
-
-
+//res14: scala.math.BigInt = 23514624000
