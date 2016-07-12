@@ -56,7 +56,19 @@ val lstOfStrs = str.trim.split('\n').toList
 val lstOfLstOfNums = lstOfStrs.map(str => str.split(" ").toList).map(str => str.map(s => BigInt(s)))
 
 val stripSize = 4
+val width = lstOfLstOfNums(0).size
+val height = lstOfLstOfNums.size
 
-// 1) Create list of lists of diagonal numbers (the length of each list should be >= 4)
+// 1) Create list of lists of diagonal numbers (the length of each list should be >= 4) (two rounds)
 // 2) Create a list of product of 4 elements on those lists (use step = 4)
 // 3) Find the max
+
+import scala.collection.mutable.ArrayBuffer
+
+val lstOfDiagonals: List[List[Int]] = List(List())
+
+for {
+  right <- 0 until lstOfLstOfNums.size-stripSize
+} {
+  lstOfDiagonals
+}
