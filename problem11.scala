@@ -59,16 +59,51 @@ val stripSize = 4
 val width = lstOfLstOfNums(0).size
 val height = lstOfLstOfNums.size
 
-// 1) Create list of lists of diagonal numbers (the length of each list should be >= 4) (two rounds)
-// 2) Create a list of product of 4 elements on those lists (use step = 4)
-// 3) Find the max
-
-import scala.collection.mutable.ArrayBuffer
-
-val lstOfDiagonals: List[List[Int]] = List(List())
-
-for {
-  right <- 0 until lstOfLstOfNums.size-stripSize
-} {
-  lstOfDiagonals
+def diagonalElementsDown(diagonalX: Int, lstOfLstOfNums: List[List[BigInt]]) = {
+  val ll = for {
+    dx <- diagonalX until width
+    dy <- 0 until height if dx == dy + diagonalX
+  } yield lstOfLstOfNums(dx)(dy)
+  ll toList
 }
+
+def diagonalElementsRight(diagonalX: Int, lstOfLstOfNums: List[List[BigInt]]) = {
+  val ll = for {
+    dx <- diagonalX until width
+    dy <- 0 until height if dx == dy + diagonalX
+  } yield lstOfLstOfNums(dy)(dx)
+  ll toList
+}
+
+val diagElms1 = for {
+  diagonalX <- 0 to lstOfLstOfNums.size-stripSize
+} yield diagonalElementsDown(diagonalX, lstOfLstOfNums)
+
+val diagElms2 = for {
+  diagonalX <- 1 to lstOfLstOfNums.size-stripSize
+} yield diagonalElementsRight(diagonalX, lstOfLstOfNums)
+
+val allDiagonalLists = diagElms1.toList ++ diagElms2.toList
+
+val rightDownMax = allDiagonalLists.map( li => li.sliding(4) ).flatten.map( l4 => l4.reduce(_*_) ).max
+
+// opposite direction
+
+val lstOfLstOfNumsReversed = lstOfStrs.map(str => str.split(" ").toList.reverse).map(str => str.map(s => BigInt(s)))
+
+val diagElms11 = for {
+  diagonalX <- 0 to lstOfLstOfNumsReversed.size-stripSize
+} yield diagonalElementsDown(diagonalX, lstOfLstOfNumsReversed)
+
+val diagElms22 = for {
+  diagonalX <- 1 to lstOfLstOfNumsReversed.size-stripSize
+} yield diagonalElementsRight(diagonalX, lstOfLstOfNumsReversed)
+
+val allDiagonalLists2 = diagElms11.toList ++ diagElms22.toList
+
+val leftDownMax = allDiagonalLists2.map( li => li.sliding(4) ).flatten.map( l4 => l4.reduce(_*_) ).max
+
+if (rightDownMax > leftDownMax) rightDownMax else leftDownMax
+
+//res0: BigInt = 70600674
+
