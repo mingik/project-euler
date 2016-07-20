@@ -16,11 +16,19 @@
   NOTE: Once the chain starts the terms are allowed to go above one million.
   */
 
-def collatzNext(n: Int): Int = {
-  if (n % 2 == 0) n / 2 else 3*n + 1
+import scala.annotation.tailrec
+
+def collatzNext(n: Long): Long = if (n%2 == 0) n/2 else 3*n+1
+
+def collatzLength(n: Long): Int = {
+  @tailrec
+  def helper(n: Long, acc: Int): Int = {
+    if (n == 1) acc+1 else helper(collatzNext(n), acc+1)
+  }
+  helper(n, 0)
 }
 
-def produceCollatz(n: Int): Stream[Int] = {
-  val collatz: Stream[Int] = n #:: collatzNext(n) #:: collatz.tail.tail
-  collatz
-}
+(1 until 1000000).view.map(n => (collatzLength(n),n) ).reduceLeft((a,b) => if (a._1>b._1) a else b)._2
+
+// res14: Int = 837799
+
